@@ -15,7 +15,7 @@ def low_pass_filter(val, parameters):
     return 1./(1 + (val / parameters['mmax']) ** parameters['n'])
 
 choices = ['PowerLaw+Peak', 'MultiPeak', 'BrokenPowerLaw', 'UniformSecondary', 
-           'DoubleGaussian', 'LogNormal', 'PowerLawDipBreak', 'PowerLaw', 'Uniform_components']
+           'DoubleGaussian', 'LogNormal', 'PowerLawDipBreak', 'PowerLaw', 'Uniform_components', 'Uniform_M_q']
 class Mass:
     def __init__(self, 
                  mass_model, 
@@ -187,6 +187,9 @@ class Mass:
             elif self.mass_model == 'uniformcomponents':
                 mass_prior['mass_1_source'] = bilby.core.prior.analytical.Uniform(minimum=self.parameters['mmin'], maximum=self.parameters['mmax'], name='mass_1_source')
                 mass_prior['mass_2_source'] = bilby.core.prior.analytical.Uniform(minimum=self.parameters['mmin'], maximum=self.parameters['mmax'], name='mass_2_source')
+            elif self.mass_model == 'uniformmq':
+                mass_prior['total_mass_source'] = bilby.core.prior.analytical.Uniform(minimum=self.parameters['minimum_total_mass'], maximum=self.parameters['maximum_total_mass'], name='total_mass_source')
+                mass_prior['mass_ratio'] = bilby.core.prior.analytical.Uniform(minimum=self.parameters['minimum_mass_ratio'], maximum=self.parameters['maximum_mass_ratio'], name='mass_ratio')
             else:
                 raise ValueError('{} is not implemented in gwpopulation. Please choose from {}'.format(self.mass_model, choices))
 
