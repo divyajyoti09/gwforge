@@ -194,8 +194,12 @@ class Mass:
                 raise ValueError('{} is not implemented in gwpopulation. Please choose from {}'.format(self.mass_model, choices))
 
             prior_samples = mass_prior.sample(self.number_of_samples)
-            samples['mass_1_source'] = prior_samples['mass_1_source']
-            samples['mass_2_source'] = prior_samples['mass_2_source']
+            if self.mass_model == 'uniformmq':
+                samples['total_mass_source'] = prior_samples['total_mass_source']
+                samples['mass_ratio'] = prior_samples['mass_ratio']
+            else:
+                samples['mass_1_source'] = prior_samples['mass_1_source']
+                samples['mass_2_source'] = prior_samples['mass_2_source']
             
             if self.mass_model == 'uniformcomponents':
                 m1_tmp = samples['mass_1_source']
